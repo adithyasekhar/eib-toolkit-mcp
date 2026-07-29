@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eib-toolkit-mcp"
+version = "0.1.0"
+description = "Workday EIB Toolkit — generate, validate, and diff EIB load spreadsheets. Deterministic core, optional Claude assist, MCP server included."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Adithya Sekhar Gummadi" }]
+keywords = ["workday", "eib", "spreadsheet", "integrations", "mcp", "claude"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Office/Business",
+]
+dependencies = ["openpyxl>=3.1"]
+
+[project.optional-dependencies]
+claude = ["anthropic>=0.40"]
+mcp = ["mcp>=1.2"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+# [project.scripts] is added in the CLI slice (see docs/PLAN.md) once eib_toolkit.cli exists.
+
+[project.urls]
+Homepage = "https://github.com/adithyasekhar/eib-toolkit-mcp"
+Issues = "https://github.com/adithyasekhar/eib-toolkit-mcp/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["eib_toolkit"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B", "RUF", "DTZ"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
