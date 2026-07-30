@@ -10,7 +10,7 @@ One slice per day. Each slice ships complete: real code **and** its tests, quali
   Landscape research with sources; pyproject/LICENSE/CI/README skeleton; package + placeholder
   tests.
 
-- [ ] **Slice 1 — Core models + workbook parser** (`eib_toolkit/model.py`, `eib_toolkit/parser.py`)
+- [x] **Slice 1 — Core models + workbook parser** (2026-07-30) (`eib_toolkit/model.py`, `eib_toolkit/parser.py`)
   Dataclasses: `TemplateSpec` (sheets, columns with header text, required flag, declared type,
   reference-ID type, spreadsheet-key role), `Workbook`/`SheetData`/`CellRef`. Parser reads an
   EIB template or filled load workbook (.xlsx via openpyxl, read-only mode): detect header
