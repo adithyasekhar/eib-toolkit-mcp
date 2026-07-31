@@ -17,17 +17,31 @@ from eib_toolkit.model import (
     Workbook,
 )
 from eib_toolkit.parser import parse_template, parse_workbook
+from eib_toolkit.validate import (
+    RULES,
+    Finding,
+    Severity,
+    ValidationConfig,
+    ValidationReport,
+    validate_workbook,
+)
 
 __all__ = [
+    "RULES",
     "CellRef",
     "ColumnSpec",
     "ColumnType",
+    "Finding",
+    "Severity",
     "SheetData",
     "SheetRole",
     "SheetSpec",
     "TemplateSpec",
+    "ValidationConfig",
+    "ValidationReport",
     "Workbook",
     "__version__",
     "parse_template",
     "parse_workbook",
+    "validate_workbook",
 ]

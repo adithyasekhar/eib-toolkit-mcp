@@ -19,7 +19,7 @@ One slice per day. Each slice ships complete: real code **and** its tests, quali
   by spreadsheet key). Tolerant of messy real-world exports: blank padding rows/columns,
   merged header cells, stray instruction sheets. Tests on hand-built minimal workbooks.
 
-- [ ] **Slice 2 — Validation engine** (`eib_toolkit/validate.py`)
+- [x] **Slice 2 — Validation engine** (2026-07-31) (`eib_toolkit/validate.py`)
   Rule-based checks producing `Finding(severity, code, sheet, row, column, message, evidence)`:
   missing required values; date parse/format (ISO 8601 vs. locale text); numeric coercion
   (decimal commas, thousands separators); boolean normalization; reference-ID shape checks
