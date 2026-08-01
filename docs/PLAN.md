@@ -28,12 +28,16 @@ One slice per day. Each slice ships complete: real code **and** its tests, quali
   row/column-addressed and evidence-backed. Deterministic severity; summary rollup. Full test
   coverage per rule.
 
-- [ ] **Slice 3 — Generator + diff** (`eib_toolkit/generate.py`, `eib_toolkit/diff.py`)
+- [x] **Slice 3 — Generator + diff** (2026-08-01) (`eib_toolkit/generate.py`, `eib_toolkit/diff.py`)
   Generate: declarative load spec (YAML/JSON: target sheets, column mappings, constants,
   key strategy) + input CSV → filled .xlsx matching a template, with correct types and
-  auto-assigned spreadsheet keys for one-to-many sheets. Diff: (a) template vs. template —
-  release-drift report (added/removed/renamed columns, requiredness/type changes); (b) filled
-  workbook vs. filled workbook — content diff keyed on spreadsheet keys. Tests round-trip
+  auto-assigned spreadsheet keys for one-to-many sheets. Fills a copy of the template file
+  so the header band survives byte-for-byte; structural spec errors fail fast, value-level
+  problems are written verbatim + warned so the validator shows them with evidence. Diff:
+  (a) template vs. template — release-drift report (added/removed/renamed columns,
+  requiredness/type changes, `breaking` verdict); (b) filled workbook vs. filled workbook —
+  content diff keyed on spreadsheet keys with normalization (1 == 1.0 == "1"), positional
+  fallback for keyless sheets, schema drift attached. Tests round-trip
   generate→parse→validate.
 
 - [ ] **Slice 4 — CLI + MCP server** (`eib_toolkit/cli.py`, `eib_toolkit/mcp_server.py`)

@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Topic :: Office/Business",
 ]
-dependencies = ["openpyxl>=3.1"]
+dependencies = ["openpyxl>=3.1", "pyyaml>=6"]
 
 [project.optional-dependencies]
 claude = ["anthropic>=0.40"]
