@@ -16,8 +16,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: pip install -e ".[dev]"
+      - run: pip install -e ".[dev,mcp]"
       - run: pytest
       - run: ruff check .
-      # A CLI smoke run on the bundled fixtures is added once the CLI slice lands
-      # (see docs/PLAN.md).
+      - name: CLI end-to-end smoke (synthetic fixtures)
+        run: |
+          set -euxo pipefail
+          python tests/make_smoke_fixtures.py /tmp/smoke
+          eib-toolkit inspect /tmp/smoke/template.xlsx
+          eib-toolkit inspect /tmp/smoke/template.xlsx --format markdown > /dev/null
+          eib-toolkit draft-spec /tmp/smoke/template.xlsx > /dev/null
+          eib-toolkit generate /tmp/smoke/template.xlsx --spec /tmp/smoke/spec.yaml -o /tmp/smoke/load.xlsx
+          eib-toolkit validate /tmp/smoke/load.xlsx
+          eib-toolkit validate /tmp/smoke/filled.xlsx --format json > /dev/null
+          eib-toolkit diff /tmp/smoke/filled.xlsx /tmp/smoke/load.xlsx

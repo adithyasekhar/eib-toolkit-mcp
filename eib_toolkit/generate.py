@@ -51,6 +51,7 @@ __all__ = [
     "SheetMapping",
     "generate_workbook",
     "load_spec",
+    "spec_from_dict",
 ]
 
 
@@ -121,33 +122,43 @@ def load_spec(path: str | Path) -> LoadSpec:
         import yaml  # deferred so JSON-only users never need it
 
         raw = yaml.safe_load(text)
+    return spec_from_dict(raw, base_dir=str(path.parent), origin=str(path))
+
+
+def spec_from_dict(raw: Any, base_dir: str = ".", origin: str = "load spec") -> LoadSpec:
+    """Build a :class:`LoadSpec` from already-parsed YAML/JSON data.
+
+    This is the single structural gate every spec passes through — files via
+    :func:`load_spec`, drafted specs (e.g. from the optional Claude layer)
+    directly. ``origin`` labels error messages.
+    """
     if not isinstance(raw, dict):
-        raise GenerateError(f"{path}: load spec must be a mapping, got {type(raw).__name__}")
+        raise GenerateError(f"{origin}: load spec must be a mapping, got {type(raw).__name__}")
 
     unknown = set(raw) - {"sheets", "key_strategy"}
     if unknown:
-        raise GenerateError(f"{path}: unknown load-spec key(s): {', '.join(sorted(unknown))}")
+        raise GenerateError(f"{origin}: unknown load-spec key(s): {', '.join(sorted(unknown))}")
 
     sheets = []
     for i, entry in enumerate(raw.get("sheets") or []):
         if not isinstance(entry, dict):
-            raise GenerateError(f"{path}: sheets[{i}] must be a mapping")
+            raise GenerateError(f"{origin}: sheets[{i}] must be a mapping")
         unknown = set(entry) - {"sheet", "source", "columns", "key_from"}
         if unknown:
             raise GenerateError(
-                f"{path}: sheets[{i}]: unknown key(s): {', '.join(sorted(unknown))}"
+                f"{origin}: sheets[{i}]: unknown key(s): {', '.join(sorted(unknown))}"
             )
         for want in ("sheet", "source"):
             if not entry.get(want):
-                raise GenerateError(f"{path}: sheets[{i}] is missing {want!r}")
+                raise GenerateError(f"{origin}: sheets[{i}] is missing {want!r}")
         columns = []
         for j, col in enumerate(entry.get("columns") or []):
             if not isinstance(col, dict) or not col.get("column"):
-                raise GenerateError(f"{path}: sheets[{i}].columns[{j}] needs a 'column'")
+                raise GenerateError(f"{origin}: sheets[{i}].columns[{j}] needs a 'column'")
             unknown = set(col) - {"column", "source", "const"}
             if unknown:
                 raise GenerateError(
-                    f"{path}: sheets[{i}].columns[{j}]: unknown key(s): "
+                    f"{origin}: sheets[{i}].columns[{j}]: unknown key(s): "
                     f"{', '.join(sorted(unknown))}"
                 )
             columns.append(
@@ -168,7 +179,7 @@ def load_spec(path: str | Path) -> LoadSpec:
     return LoadSpec(
         sheets=sheets,
         key_strategy=str(raw.get("key_strategy") or "sequential"),
-        base_dir=str(path.parent),
+        base_dir=base_dir,
     )
 
 

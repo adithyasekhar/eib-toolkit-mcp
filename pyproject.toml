@@ -27,7 +27,8 @@ claude = ["anthropic>=0.40"]
 mcp = ["mcp>=1.2"]
 dev = ["pytest>=8", "ruff>=0.6"]
 
-# [project.scripts] is added in the CLI slice (see docs/PLAN.md) once eib_toolkit.cli exists.
+[project.scripts]
+eib-toolkit = "eib_toolkit.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/adithyasekhar/eib-toolkit-mcp"

@@ -27,16 +27,18 @@ pre-flight layer that should have existed:
 
 ## Status
 
-Day 1 — scaffold. See [docs/PLAN.md](docs/PLAN.md) for the build roadmap and
-[docs/RESEARCH.md](docs/RESEARCH.md) for the landscape research this design is based on.
+In active development — parser, validator, generator, differ, CLI, and MCP server are in
+place; bundled example fixtures and the finalized README land next. See
+[docs/PLAN.md](docs/PLAN.md) for the build roadmap and [docs/RESEARCH.md](docs/RESEARCH.md)
+for the landscape research this design is based on.
 
 ## Roadmap
 
 - [x] Research + scaffold
-- [ ] Core models + template/workbook parser
-- [ ] Validation engine (evidence-backed findings)
-- [ ] Generator + template/workbook diff
-- [ ] CLI + MCP server (FastMCP)
+- [x] Core models + template/workbook parser
+- [x] Validation engine (evidence-backed findings)
+- [x] Generator + template/workbook diff
+- [x] CLI + MCP server (FastMCP, optional Claude assist)
 - [ ] Synthetic fixtures + full test suite
 - [ ] v0.1.0
 

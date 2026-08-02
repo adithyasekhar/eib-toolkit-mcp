@@ -40,13 +40,21 @@ One slice per day. Each slice ships complete: real code **and** its tests, quali
   fallback for keyless sheets, schema drift attached. Tests round-trip
   generate→parse→validate.
 
-- [ ] **Slice 4 — CLI + MCP server** (`eib_toolkit/cli.py`, `eib_toolkit/mcp_server.py`)
-  CLI subcommands: `inspect`, `validate`, `diff`, `generate` (+ `--json`/markdown report
-  output). Restore `[project.scripts]` in pyproject; add CLI smoke step to CI. MCP server via
-  FastMCP exposing 5–7 files-in/files-out tools (inspect_template, validate_workbook,
-  diff_templates, diff_workbooks, generate_workbook, draft_load_spec). Optional Claude layer
-  (`ANTHROPIC_API_KEY`): draft a load spec from natural language and annotate findings —
-  Claude drafts/annotates, never decides. Tests for CLI exit codes and tool schemas.
+- [x] **Slice 4 — CLI + MCP server** (2026-08-02) (`eib_toolkit/cli.py`,
+  `eib_toolkit/mcp_server.py`, `eib_toolkit/claude.py`)
+  CLI subcommands: `inspect`, `validate`, `diff`, `generate`, `draft-spec`, `mcp`, each with
+  text/`--format json`/markdown output and the exit-code contract 0 clean / 1 findings or
+  differences / 2 operational error; `generate` validates its own output by default.
+  `[project.scripts]` restored; CI now installs `[dev,mcp]` and runs an end-to-end CLI smoke
+  on synthetic fixtures (`tests/make_smoke_fixtures.py`, replaced by bundled examples in
+  slice 5). MCP server via FastMCP: six stateless files-in/files-out tools
+  (inspect_template, validate_workbook, diff_templates, diff_workbooks, generate_workbook,
+  draft_load_spec), errors as `{"error": ...}` JSON. Optional Claude layer in
+  `claude.py` — drafts a load spec from natural language and annotates findings, with the
+  hard rule enforced in code: every Claude draft is re-validated structurally against the
+  template (rejected drafts fall back to the deterministic skeleton), and annotation can
+  never add, remove, or reclassify a finding. Tests: CLI exit codes and round-trips, MCP
+  tool schemas + behavior, Claude layer via injected fake clients (no network).
 
 - [ ] **Slice 5 — Synthetic fixtures + README + release** (`tests/fixtures/`, `examples/`)
   Realistic synthetic fixture set (clearly marked synthetic; fake tenant/workers, no real
