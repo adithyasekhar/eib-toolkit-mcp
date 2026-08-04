@@ -1,0 +1,21 @@
+# SYNTHETIC FIXTURE: Load spec for benefits enrollment sync
+sheets:
+  - sheet: Employees
+    source: data.csv
+    key_from: employee_id
+    columns:
+      - column: "Employee ID (WID)"
+        source: employee_id
+      - column: "First Name"
+        source: first_name
+      - column: "Last Name"
+        source: last_name
+      - column: "Date of Birth"
+        source: dob
+      - column: "Hire Date"
+        source: hire_date
+      - column: "Annual Salary"
+        source: salary
+      - column: "Eligible for Benefits"
+        source: eligible
+key_strategy: sequential
